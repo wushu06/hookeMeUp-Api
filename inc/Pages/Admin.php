@@ -20,7 +20,7 @@ class Admin extends BaseController {
 
    
 
-    function register() {
+    function __construct() {
 		
 
 		$this->settings = new SettingsApi();
@@ -53,7 +53,7 @@ class Admin extends BaseController {
                     'capability' => 'manage_options', 
                     'menu_slug' => 'hmu_api_plugin',
                     'callback' => array( $this->admin_callbacks, 'hmu_api_plugin' ),
-                    'icon_url' => $this->plugin_url.'assets/images/api.png',
+                    'icon_url' => plugins_url(). '/hook-me-up-api/assets/images/api.png',
                     'position' => 110
                 )
             );
@@ -90,9 +90,14 @@ class Admin extends BaseController {
 		$args = array(
 			array(
 				'option_group' => 'hmu_api_dashboard_options_group',
-				'option_name' => 'hmu_api_dashboard',
+				'option_name' => 'hmu_api_basic',
 				//'callback' => array( $this->fields_callbacks,'sanitizeCallback' )
-			)
+			),
+            array(
+                'option_group' => 'hmu_api_dashboard_second_group',
+                'option_name' => 'hmu_api_oauth_one',
+                //'callback' => array( $this->fields_callbacks,'sanitizeCallback' )
+            )
 			
 		);
 	
@@ -109,19 +114,106 @@ class Admin extends BaseController {
                 'title' => 'Dashboard',
                 'callback' => array( $this->fields_callbacks, 'dashboardSectionManager' ),
                 'page' => 'hmu_api_plugin' //dashboard page
+            ),
+            array(
+                'id' => 'hmu_api_dashboard_second',
+                'title' => 'Auth 1',
+                'callback' => array( $this->fields_callbacks, 'dashboardSectionManager' ),
+                'page' => 'hmu_api_auth_plugin' //dashboard page
             )
 		);
 
 		$this->settings->setSections( $args );
-	}
+    }
+    
+
+    public function dahboardFields() 
+    {
+        return  array(
+            // ID
+            //0- title 1- callback 2-page 3- section 4- option name 5-input type
+    
+            'basic_auth_url' => //id
+            array('Basic Auth Url',
+                'hmu_api_basic_auth_url',
+                'hmu_api_plugin',
+                'hmu_api_dashboard_index',
+                'hmu_api_basic',
+                'boolean'
+            ),
+        'basic_auth_username' => //id
+            array('Basic Auth Username',
+                'hmu_api_basic_auth_username',
+                'hmu_api_plugin',
+                'hmu_api_dashboard_index',
+                'hmu_api_basic',
+                'boolean'
+            ),
+        'basic_auth_password' => //id
+            array('Basic Auth Password',
+                'hmu_api_basic_auth_password',
+                'hmu_api_plugin',
+                'hmu_api_dashboard_index',
+                'hmu_api_basic',
+                'boolean'
+            ),
+        'auth_one_url' => //id
+            array('oAuth 1 Url',
+                'hmu_api_auth_1_url',
+                'hmu_api_auth_plugin',
+                'hmu_api_dashboard_second',
+                'hmu_api_oauth_one',
+                'boolean'
+            ),
+        'auth_one_ck' => //id
+            array('oAuth CK',
+                'hmu_api_auth_1_ck',
+                'hmu_api_auth_plugin',
+                'hmu_api_dashboard_second',
+                'hmu_api_oauth_one',
+                'boolean'
+            ),
+        'auth_one_cs' => //id
+            array('oAuth CS',
+                'hmu_api_auth_1_cs',
+                'hmu_api_auth_plugin',
+                'hmu_api_dashboard_second',
+                'hmu_api_oauth_one',
+                'boolean'
+            ),
+
+    
+    
+    
+        );
+    
+
+    }  
 
 	public function setFields()
 	{
-		$args = array ();
+  
+        $args = array ();
+        
+       /* $args   =array (
+            array (
+				'id' => 'basic_auth_url',
+				'title' => 'Basic Auth Url',
+				'callback' => array( $this->fields_callbacks, 'hmu_api_basic_auth_url'),
+				'page' => 'hmu_api_plugin',
+				'section' => 'hmu_api_dashboard_index',
+					'args' => array(
+						'option_name' => 'hmu_api_basic',
+						'label_for' =>'basic_auth_url',
+						'class' => 'hmu-upload'
+					)
+				)
+		
+            );*/
 
 
 
-		foreach ($this->dahboardFields   as $id_dash => $dashtitle_callback ) {
+		foreach ($this->dahboardFields()   as $id_dash => $dashtitle_callback ) {
 			
 			$args[] = array (
 				'id' => $id_dash,

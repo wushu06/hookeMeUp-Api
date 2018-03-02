@@ -9,7 +9,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "automattic/woocommerce": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "Inc\\": "./inc"

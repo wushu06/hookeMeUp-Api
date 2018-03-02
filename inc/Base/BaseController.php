@@ -19,9 +19,8 @@ class BaseController
 
     public function __construct()
     {
-        $this->plugin_path = plugin_dir_path(dirname(__FILE__, 2));
-        $this->plugin_url = plugin_dir_url(dirname(__FILE__, 2));
-        $this->plugin = plugin_basename(dirname(__FILE__, 3)) . '/hook-me-up-csv.php';
+        $this->plugin_path = SITE_ROOT;
+        $this->plugin_url = plugins_url().'/hook-me-up-api';
 
         $this->subpagesOutput = array(
 
@@ -30,8 +29,7 @@ class BaseController
         /*
         * FIELDS
         */
-        $op = array('hmu_plugin' => 'activate_cron');
-
+        
         $this->dahboardFields = array(
             // ID
             //0- title 1- callback 2-page 3- section 4- option name 5-input type
@@ -41,25 +39,9 @@ class BaseController
                     'hmu_api_basic_auth_url',
                     'hmu_api_plugin',
                     'hmu_api_dashboard_index',
-                    'hmu_api_dashboard',
+                    'hmu_api_basic',
                     'boolean'
-                ),
-            'basic_auth_username' => //id
-                array('Basic Auth Username',
-                    'hmu_api_basic_auth_username',
-                    'hmu_api_plugin',
-                    'hmu_api_dashboard_index',
-                    'hmu_api_dashboard',
-                    'boolean'
-                ),
-            'basic_auth_password' => //id
-                array('Basic Auth Password',
-                    'hmu_api_basic_auth_password',
-                    'hmu_api_plugin',
-                    'hmu_api_dashboard_index',
-                    'hmu_api_dashboard',
-                    'boolean'
-                ),
+                )
 
 
 

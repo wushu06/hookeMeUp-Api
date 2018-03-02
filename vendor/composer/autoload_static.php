@@ -11,12 +11,20 @@ class ComposerStaticInit986140e768cdc55835b4b7a9ae5778af
         array (
             'Inc\\' => 4,
         ),
+        'A' => 
+        array (
+            'Automattic\\WooCommerce\\' => 23,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Inc\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc',
+        ),
+        'Automattic\\WooCommerce\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/automattic/woocommerce/src/WooCommerce',
         ),
     );
 

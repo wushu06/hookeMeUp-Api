@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Inc\\' => array($baseDir . '/inc'),
+    'Automattic\\WooCommerce\\' => array($vendorDir . '/automattic/woocommerce/src/WooCommerce'),
 );

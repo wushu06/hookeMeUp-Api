@@ -10,25 +10,37 @@ class FieldsCallbacks extends BaseController {
 
     public $cron_name;
 
-    public function inputSanitize( $input )
+    public function sanitizeCallback( $input )
     {
-        // Create our array for storing the validated options
         $output = array();
 
-        // Loop through each of the incoming options
-        foreach ($this->dahboardFields  as $id_dash => $title_callback) {
 
-            // Check to see if the current option has a value. If so, process it.
-            if( isset( $input[$id_dash] ) ) {
+        if(isset($_POST['btnSubmit'])):
 
-                // Strip all HTML and PHP tags and properly handle quoted strings
-                $output[$id_dash] = strip_tags( stripslashes( $input[ $id_dash ] ) );
+            $output = get_option('hmu_api_dashboard');
 
-            } // end if
+            if (empty($output)) {
+                $output['1'] = $input;
 
-        } // end foreach
+            } else {
 
-        // Return the array processing any additional functions filtered by this action
+                foreach ($output as $key => $value) {
+                    $count = count($output);
+                    if ($key < $count) {
+                        $output[$key] = $value;
+
+                    } else {
+                        $output[$key + 1] = $input;
+
+                    }
+
+
+                }
+            }
+
+        endif;
+
+
         return $output;
 
     }
@@ -82,6 +94,41 @@ class FieldsCallbacks extends BaseController {
 
     }
 
+    function hmu_api_auth_1_url($args)
+    {
+        $name = $args['label_for'];
+        $classes = $args['class'];
+        $option_name = $args['option_name'];
+        $value =  get_option( $option_name );
+        $isvalue = isset($value[$name]) ? $value[$name]  : '';
+        $this->cron_name = $isvalue;
+
+        echo '<input type="text" class="regular-text hmu-input" name="'. $option_name.'['.$name.']"  value="' . $isvalue . '"  placeholder="Url">';
+    }
+
+    function hmu_api_auth_1_ck($args)
+    {
+        $name = $args['label_for'];
+        $classes = $args['class'];
+        $option_name = $args['option_name'];
+        $value =  get_option( $option_name );
+        $isvalue = isset($value[$name]) ? $value[$name]  : '';
+        $this->cron_name = $isvalue;
+
+        echo '<input type="text" class="regular-text hmu-input" name="'. $option_name.'['.$name.']"  value="' . $isvalue . '"  placeholder="CK">';
+    }
+
+    function hmu_api_auth_1_cs($args)
+    {
+        $name = $args['label_for'];
+        $classes = $args['class'];
+        $option_name = $args['option_name'];
+        $value =  get_option( $option_name );
+        $isvalue = isset($value[$name]) ? $value[$name]  : '';
+        $this->cron_name = $isvalue;
+
+        echo '<input type="text" class="regular-text hmu-input" name="'. $option_name.'['.$name.']"  value="' . $isvalue . '"  placeholder="CS">';
+    }
 
 
 

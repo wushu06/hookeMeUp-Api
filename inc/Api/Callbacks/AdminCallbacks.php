@@ -10,7 +10,7 @@ class AdminCallbacks extends BaseController {
 
     function hmu_api_plugin () {
         
-        echo require_once( "$this->plugin_path/template/dashboard.php" );
+        echo require_once( $this->plugin_path."/template/dashboard.php" );
         
     
     }
