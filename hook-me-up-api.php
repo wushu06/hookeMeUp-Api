@@ -46,42 +46,8 @@ new Admin();
 use Inc\Base\Enqueue;
 new Enqueue();
 
+/*use Inc\Data\InsertProducts;
+new InsertProducts();*/
 
-add_action('init', 'addpoost');
-function addpoost()
-{
-	$count = post_exists('Product with attributes only PHP22233');
-	if($count != 0 ) {
-		$post = array(
-			'post_title' => 'Product with attributes only PHP22233',
-			'post_content' => '',
-			'post_status' => 'publish',
-			'post_type' => "product"
-		);
-		$new_post_id = wp_insert_post($post);
-		wp_set_object_terms($new_post_id, 'variable', 'product_type');
+//include dirname( __FILE__ ) . '/inc/Data/insert_product.php';
 
-		/**
-		 * Add product attribute.
-		 */
-		$attr_names = array(
-			'Colour' => array('Red'),
-			'Size' => array('Small', 'Large')
-		);
-		$attr_data = array();
-		foreach ($attr_names as $attr_name => $attr_values) {
-			$attr_sanitized_name = 'pa_' . sanitize_title($attr_name);
-			$attr_data += array(
-				$attr_sanitized_name => array(
-					'name' => $attr_name,
-					'value' => implode('|', $attr_values),
-					'is_visible' => 1,
-					'is_variation' => 1,
-					'is_taxonomy' => 0,
-					'position' => 0,
-				)
-			);
-		}
-		update_post_meta($new_post_id, '_product_attributes', $attr_data, TRUE);
-	}
-}
