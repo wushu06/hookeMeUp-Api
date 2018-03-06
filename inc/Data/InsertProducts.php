@@ -170,7 +170,7 @@ class InsertProducts extends BaseController
 
 	function insert_product_variations ($post_id, $variations)
 	{
-		if($variations)
+
 
 		foreach ($variations as $index => $variation)
 		{
@@ -183,19 +183,23 @@ class InsertProducts extends BaseController
 				'post_type'   => 'product_variation',
 
 			);
+			if($variation !='') {
+				$variation_post_id = wp_insert_post($variation_post); // Insert the variation
 
-			$variation_post_id = wp_insert_post($variation_post); // Insert the variation
 
-			foreach ($variation['attributes'] as $attribute => $value) // Loop through the variations attributes
-			{
-				$attribute_term = get_term_by('name', $value, 'pa_'.$attribute); // We need to insert the slug not the name into the variation post meta
+				foreach ($variation['attributes'] as $attribute => $value) // Loop through the variations attributes
+				{
+					if($value !='') {
+						$attribute_term = get_term_by('name', $value, 'pa_' . $attribute); // We need to insert the slug not the name into the variation post meta
 
-				update_post_meta($variation_post_id, 'attribute_pa_'.$attribute, $attribute_term->slug);
-				// Again without variables: update_post_meta(25, 'attribute_pa_size', 'small')
+						update_post_meta($variation_post_id, 'attribute_pa_' . $attribute, $attribute_term->slug);
+						// Again without variables: update_post_meta(25, 'attribute_pa_size', 'small')
+					}
+				}
+
+				update_post_meta($variation_post_id, '_price', $variation['price']);
+				update_post_meta($variation_post_id, '_regular_price', $variation['price']);
 			}
-
-			update_post_meta($variation_post_id, '_price', $variation['price']);
-			update_post_meta($variation_post_id, '_regular_price', $variation['price']);
 		}
 	}
 

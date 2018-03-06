@@ -162,7 +162,7 @@ class DisplayData
 
 
 				echo '<pre>';
-				//var_dump($pro_arr);
+				//var_dump($variation);
 				echo '</pre>';
 
 
@@ -244,7 +244,7 @@ class DisplayData
 
 				$stdInstance   = json_decode(json_encode($r),true);
 
-				if ($i == 100) { break; }
+				if ($i == 50) { break; }
 
 
 
@@ -298,6 +298,73 @@ class DisplayData
 
 	}
 
+
+	// loop to get the stock level
+	function hmu_stock_level_loop()
+	{
+		$option = get_option('hmu_api_basic');
+		$url = $option['basic_auth_url'].'Products/ALL?DateAdjusted=2018-02-20T00:00:00';
+		$user = $option["basic_auth_username"];
+		$pass = $option["basic_auth_password"];
+
+
+		//   echo $show = 'website: '.$url.' ck: '.$user.' cs: '.$pass;
+		$data = array($url, $user, $pass);
+
+
+		$wp_request_headers = array(
+			'Authorization' => 'Basic ' . base64_encode( $user.':'.$pass )
+		);
+
+		$wp_request_url = $url;
+
+		$wp_get_post_response = wp_remote_request(
+			$wp_request_url,
+			array(
+				'method'    => 'GET',
+				'headers'   => $wp_request_headers
+			)
+		);
+
+		// echo wp_remote_retrieve_response_code( $wp_get_post_response ) . ' ' . wp_remote_retrieve_response_message( $wp_get_post_response );
+		$res = json_decode($wp_get_post_response['body']);
+
+
+		$i = 1;
+		$level_ID = array();
+
+		foreach ($res as $r ) {
+
+			$stdInstance   = json_decode(json_encode($r),true);
+
+			if ($i == 2) { break; }
+
+
+			$ID = $stdInstance["ProductID"];
+			$level =  $this->hmu_display_basic_orders($ID);
+
+
+
+			$this->hmu_insert_stock($ID, $level);
+
+
+
+
+			$i++;
+		}
+
+
+
+	}
+
+	function hmu_insert_stock($ID, $level)
+    {
+	    update_post_meta($ID, '_stock', $level);
+	    if($level != 0) {
+		    update_post_meta($ID, '_stock_status', 'instock');
+	    }
+
+    }
 
 
 

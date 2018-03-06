@@ -21,6 +21,14 @@ if(isset($_POST['insert_all_products'])) {
 	$insert_product->insert_all($data_array);
 }
 
+if(isset($_POST['update_stock'])) {
+
+$display_data->hmu_stock_level_loop();
+
+
+
+}
+
 
 ?>
 
@@ -86,8 +94,16 @@ if(isset($_POST['insert_all_products'])) {
                 $url = $option['basic_auth_url'];
                 $username = $option["basic_auth_username"];
                 $password = $option["basic_auth_password"];
+
                 ?>
+
                 <h2>Basic Auth</h2>
+
+                <hr>
+                <form action="" method="post">
+                    <input class="hmu-input hmu-success" type="submit" name="update_stock" value="Update Stock">
+                </form>
+
                 <table class="widefat fixed" cellspacing="0">
 
                     <thead>
@@ -112,7 +128,10 @@ if(isset($_POST['insert_all_products'])) {
                     </tbody>
 
                 </table>
-                <a class="btn btn-danger" href="<?php echo admin_url() ?>?page=hmu_api_plugin&tab=basic_auth&delete=ba">Delete table</a>
+
+                <hr>
+                <br/>
+                <a class=" hmu-input hmu-delete" href="<?php echo admin_url() ?>?page=hmu_api_plugin&tab=basic_auth&delete=ba">Delete table</a>
             <?php elseif($active_tab == 'auth_one'): ?>
                 <form method="post" class="hmu-general-form" action="options.php">
                 <?php
@@ -163,8 +182,9 @@ if(isset($_POST['insert_all_products'])) {
                 <h1>All Porducts</h1>
                 <p>Link: Products/ALL?DateAdjusted=2018-02-20T00:00:00 </p>
                 <form action="" method="post">
-                    <input type="submit" name="insert_all_products" value="Insert Products">
+                    <input class="hmu-btn hmu-primary" type="submit" name="insert_all_products" value="Insert Products">
                 </form>
+
 	            <?php  $display_data->hookeMeUp_display_basic_result(); ?>
 
 
